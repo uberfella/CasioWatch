@@ -1,2 +1,2 @@
 # CasioWatch
- Sof
+ My view on how that watch could be coded
