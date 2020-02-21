@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">CasioWatch</string>
+
+    <string name="default_time">00:00</string>
+    <string name="default_seconds">00</string>
+    <string name="default_weekDay">mo</string>
+    <string name="default_day_of_month">1</string>
+
+    <string name="twenty_four_hours_format">24H</string>
+    <string name="pm_format">pm</string>
+
+    <string-array name="weekDays">
+        <item>mo</item>
+        <item>tu</item>
+        <item>we</item>
+        <item>th</item>
+        <item>fr</item>
+        <item>sa</item>
+        <item>su</item>
+    </string-array>
+
+</resources>
