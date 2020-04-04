@@ -7,7 +7,6 @@ public class LocalStringsAssistance extends Application {
     private static LocalStringsAssistance mInstance;
     private static Resources res;
 
-
     @Override
     public void onCreate() {
         super.onCreate();

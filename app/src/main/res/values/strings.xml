@@ -8,6 +8,9 @@
 
     <string name="twenty_four_hours_format">24H</string>
     <string name="pm_format">pm</string>
+    <string name="alarm_text">AL</string>
+    <string name="stopwatch_text">ST</string>
+    <string name="stopwatch_split">SPLIT</string>
 
     <string-array name="weekDays">
         <item>mo</item>
@@ -18,5 +21,7 @@
         <item>sa</item>
         <item>su</item>
     </string-array>
+
+    <string name="default_stopwatch_ten_milliseconds">00</string>
 
 </resources>

@@ -1,11 +1,11 @@
 package com.example.casiowatch.mainLogic;
 
 /*
-    there are 4 screens:
-    first will display weekDay, hours-minutes-seconds and timeFormat
+    there are 4 modes:
+    first will display current time, weekday and day of month
     second screen displays alarm time
     third displays stopwatch
-    fourth will display the entries from the first screen but user can edit the values, including the month-of-the-year which is not displayed on the first screen at all but is always there
+    fourth will display the entries from the first mode but user can edit the values, including the month-of-the-year which is not displayed on the first screen at all but is always there
 
     ISSUES that I got along writing the code
     1) Find the right thread class and utilize it ✔
@@ -32,6 +32,13 @@ package com.example.casiowatch.mainLogic;
             android:background="@android:color/transparent"
         instead
         and keep in mind that invisible means invisible, but any spacing it would normally take up will still be used
+    9) Is it a good idea to run two threads in two classes. How many threads can I run?
+
+
+    Remarks:
+        - if we create object inside Handler with get__() method, values of it won't update
+
+
 
     Jan - 31    1
     Feb - 28    2
@@ -71,12 +78,38 @@ package com.example.casiowatch.mainLogic;
     22:00	10 PM
     23:00	11 PM
 
+    TODO backlight
+
+    TODO calculations remain while app is minimized
+
+    forceReturnToTheMainMode{
+        (alarmMode && noSelection) if the minutes mark is equal 0 for the second time
+        (alarmMode && hoursSelected) if the minutes mark is equal 0 for the second time
+        (alarmMode && minutesSelected) if the minutes mark is equal 0 for the second time
+
+        (stopwatchMode && isRunning || stopwatchMode && !isRunning) = til' kingdom come
+
+        (editMode && hoursSelected) if the minutes mark is equal 0 for the second time
+        (editMode && minutesSelected) if the minute mark is equal to 0 for the second time
+        (editMode && secondsSelected) if the minute mark is equal to 0 for the second time
+        (editMode && monthSelected) if the minute mark is equal to 0 for the second time
+        (editMode && daysOfMonthSelected) if the minute mark is equal to 0 for the second time
+        (editMode && dayOfWeekSelected) if the minute mark is equal to 0 for the second time
+
+        it resets if we switch hours - minutes - noSelection or press the button
+    }
+
+    ?Is there hourlyChime while (!mainViewsAreVisible)? yes
+    ?что целесообразнее, в потоке постоянно проверять нажимались ли кнопки за последние 90 секунд и осуществлять действие если нет, или после каждого нажатия кнопки запускать таймер 90 секунд и осуществлять действие как он дойдет до нуля?
 */
 
 import android.content.Context;
 import android.os.Handler;
 import com.example.casiowatch.MainActivity;
 import com.example.casiowatch.R;
+
+import static com.example.casiowatch.MainActivity.startIdleCalculations;
+import static com.example.casiowatch.MainActivity.forceReturnToTheMainMode;
 
 public class TimeCalc {
 
@@ -88,13 +121,15 @@ public class TimeCalc {
         this.applicationContext = applicationContext;
     }
 
+    public static int idleSeconds = 0;
+
+    public static int minuteMarkPassedCount = 0;
+
     private int seconds = 50;
-    private int minutes = 40;
-    private int hours = 23;
-    private int month = 12;
+    private int minutes = 59;
+    private int hours = 12;
+    private int month = 2;
     private int dayOfMonth = 31;
-
-
 
     private int weekDayCount;
     private String weekDay = weekDayDefaultVal();
@@ -105,12 +140,10 @@ public class TimeCalc {
     public int getMinutes(){
         return minutes;
     }
-
     public int getHours(){
         return hours;
     }
     public int getAdaptedHours() {
-
         if (MainActivity.twentyFourHoursFormat) {
             return hours;
         } else if (!MainActivity.twentyFourHoursFormat) {
@@ -126,6 +159,7 @@ public class TimeCalc {
         }
         return hours;
     }
+
     public int getMonth(){
         return month;
     }
@@ -146,6 +180,12 @@ public class TimeCalc {
                 if(seconds==60){
                     seconds=0;
                     minutes++;
+                    if(startIdleCalculations) {
+                        minuteMarkPassedCount++;
+                        if(minuteMarkPassedCount == 2){
+                            forceReturnToTheMainMode = true;
+                        }
+                    }
                     if(minutes==60){
                         minutes=0;
                         hours++;
@@ -162,7 +202,7 @@ public class TimeCalc {
         });
     }
 
-    private void switchWeekDay(){
+    public void switchWeekDay(){
         weekDayCount++;
         if(weekDayCount>6){
             weekDayCount = 0;
@@ -212,6 +252,43 @@ public class TimeCalc {
         }
     }
 
+    public void iterateHours(){
+        hours++;
+        if(hours == 24){
+            hours = 0;
+        }
+    }
 
+    public void iterateMinutes(){
+        minutes++;
+        if(minutes == 60){
+            minutes = 0;
+        }
+    }
+
+    public void resetSeconds(){
+        seconds = 0;
+    }
+
+    public void iterateMonth(){
+        month++;
+        if(month==13){
+            month = 1;
+        }
+    }
+
+    //Casio watch suggests that there are always 28 days in February, you can only set it to 29 manually
+    //it makes sense considering that user gets the right day of month every 3 years out of 4 without editing anything
+    //that's why there is the separate method
+    public void iterateDayOfMonth(){
+        dayOfMonth++;
+        if(month == 2) {
+            if(dayOfMonth > 29){
+                dayOfMonth = 1;
+            }
+        } else if (dayOfMonth > maxDaysInCurrentMonth(month)) {
+            dayOfMonth = 1;
+        }
+    }
 
 }
