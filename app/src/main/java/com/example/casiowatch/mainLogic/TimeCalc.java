@@ -83,7 +83,7 @@ package com.example.casiowatch.mainLogic;
     TODO calculations remain while app is minimized
 
     forceReturnToTheMainMode{
-        (alarmMode && noSelection) if the minutes mark is equal 0 for the second time
+        (alarmMode && noSelection) if the minutes mark is equal 0 for the second time 
         (alarmMode && hoursSelected) if the minutes mark is equal 0 for the second time
         (alarmMode && minutesSelected) if the minutes mark is equal 0 for the second time
 
