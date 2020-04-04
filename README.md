@@ -1,2 +1,2 @@
 # CasioWatch
- My view on how that watch could be coded
+ A piece of reverse engineering
