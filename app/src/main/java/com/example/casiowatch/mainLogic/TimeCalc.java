@@ -34,10 +34,7 @@ package com.example.casiowatch.mainLogic;
         and keep in mind that invisible means invisible, but any spacing it would normally take up will still be used
     9) Is it a good idea to run two threads in two classes. How many threads can I run?
 
-
-    Remarks:
         - if we create object inside Handler with get__() method, values of it won't update
-
 
 
     Jan - 31    1
@@ -78,12 +75,10 @@ package com.example.casiowatch.mainLogic;
     22:00	10 PM
     23:00	11 PM
 
-    TODO backlight
-
     TODO calculations remain while app is minimized
 
     forceReturnToTheMainMode{
-        (alarmMode && noSelection) if the minutes mark is equal 0 for the second time 
+        (alarmMode && noSelection) if the minutes mark is equal 0 for the second time
         (alarmMode && hoursSelected) if the minutes mark is equal 0 for the second time
         (alarmMode && minutesSelected) if the minutes mark is equal 0 for the second time
 
@@ -98,9 +93,6 @@ package com.example.casiowatch.mainLogic;
 
         it resets if we switch hours - minutes - noSelection or press the button
     }
-
-    ?Is there hourlyChime while (!mainViewsAreVisible)? yes
-    ?что целесообразнее, в потоке постоянно проверять нажимались ли кнопки за последние 90 секунд и осуществлять действие если нет, или после каждого нажатия кнопки запускать таймер 90 секунд и осуществлять действие как он дойдет до нуля?
 */
 
 import android.content.Context;
@@ -120,8 +112,6 @@ public class TimeCalc {
         this.interactionInterface = interactionInterface;
         this.applicationContext = applicationContext;
     }
-
-    public static int idleSeconds = 0;
 
     public static int minuteMarkPassedCount = 0;
 
@@ -279,7 +269,7 @@ public class TimeCalc {
 
     //Casio watch suggests that there are always 28 days in February, you can only set it to 29 manually
     //it makes sense considering that user gets the right day of month every 3 years out of 4 without editing anything
-    //that's why there is the separate method
+    //that's why there is the separate method for manual editing
     public void iterateDayOfMonth(){
         dayOfMonth++;
         if(month == 2) {

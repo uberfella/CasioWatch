@@ -61,23 +61,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private int modeCount = 1;
     private boolean returnToTheMainMode = false;
 
-    //this boolean is needed for cases where we switch from the edit mode with month, dayOfMonth, dayOfWeek animated to the main mode
-    private boolean monthAnimationOccurs;
-
     //booleans for alarm mode and alarm/hourlyChime signs
-    private boolean hourlyChimeIsOn = true;
-    private boolean alarmIsOn = true;
     public static boolean alarmIsRinging;
     public static boolean alarmStop;
-    private boolean alarmAnimationStarted;
-    private boolean hourlyChimeBoolean = true;
     public static boolean twentyFourHoursFormat = true;
     public static boolean isRunning = false;
+
+    private boolean hourlyChimeIsOn = true;
+    private boolean alarmIsOn = true;
+    private boolean alarmAnimationStarted;
+    private boolean hourlyChimeBoolean = true;
     private boolean stopWatchSplitSequence;
     private boolean check2;
 
-    //this boolean is to not let updateUI thread to show textViewPmFormat || textViewTimeFormat
+    //this boolean purpose is to not let updateUI thread to show textViewPmFormat || textViewTimeFormat
     private boolean monthModeIsOn;
+
+    //this boolean is needed for cases where we switch from the edit mode with month, dayOfMonth, dayOfWeek animated to the main mode
+    private boolean monthAnimationOccurs;
 
     //SELECTIONS
     //booleans for alarm mode selections
@@ -286,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         //stopwatch mode
         if(!stopWatchSplitSequence) {
             tenMilliseconds.setLength(0);
-            tenMilliseconds.append(String.format(Locale.getDefault(), "%02d", stopWatch.getTenMilliseconds()));
+            tenMilliseconds.append(String.format(Locale.getDefault(), "%02d", (stopWatch.getMilliseconds())));
             textViewStopwatchTenMilliseconds.setText(tenMilliseconds);
 
             stopwatchMinutes.setLength(0);
@@ -354,7 +355,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         //alarm mode
-        //make sounds and alarm TODO
         if(alarmViewsAreVisible){
 
             returnToTheMainMode = true;
@@ -393,10 +393,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         //stopwatch mode
         if(stopWatchViewsAreVisible){
 
-            modeButtonSound.start();
-
-            returnToTheMainMode = true;
-
             if(!isRunning){
                 startAnimation(textViewColon);
                 isRunning = true;
@@ -404,6 +400,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 textViewColon.clearAnimation();
                 isRunning = false;
             }
+
+            modeButtonSound.start();
+
+            returnToTheMainMode = true;
+
         }
 
         //edit mode
@@ -784,7 +785,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         mainScreenViewsAreVisible = true;
     }
-
 
 }
 
