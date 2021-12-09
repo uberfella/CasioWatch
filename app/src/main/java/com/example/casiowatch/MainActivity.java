@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private boolean editDayOfWeekSelected = false;
 
     public static boolean startIdleCalculations;
-    public static boolean forceReturnToTheMainMode;
+    public static boolean forceReturnToTheMainModeBool;
 
     //reference variables of respected classes
     private TimeCalc m;
@@ -265,7 +265,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         //alarm sequence
         if(alarm.getHours() == m.getHours() && alarm.getMinutes() == m.getMinutes() && m.getSeconds() <= 20 && m.getSeconds() >= 0 && !alarmStop){
-            //replace sound TODO
             modeButtonSound.start();
             alarmIsRinging = true;
         } else {
@@ -335,9 +334,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         //return to the main mode if idleTime > 90
-        if(forceReturnToTheMainMode){
+        if(forceReturnToTheMainModeBool){
             forceReturnToTheMainMode();
-            forceReturnToTheMainMode = false;
+            forceReturnToTheMainModeBool = false;
             minuteMarkPassedCount = 0;
         }
     }
@@ -409,7 +408,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         //edit mode
         if(editModIsOn){
-            //this workaround is needed for the cases where we the time is equal to the alarm time and we edit the time fast, e.g. iterating hours when the time is still equal to the alarm time, this way the alarm will start again which is correct
+            //this workaround is needed for the cases where the time is equal to the alarm time and we edit the time fast, e.g. iterating hours when the time is still equal to the alarm time, this way the alarm will start again which is correct
             alarmStop = false;
 
             minuteMarkPassedCount = 0;
@@ -427,7 +426,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 m.iterateMonth();
             }
             if(editDayOfMonthSelected){
-                //TODO 1 digit
                 m.iterateDayOfMonth();
             }
             if(editDayOfWeekSelected){
@@ -465,7 +463,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 //for splitSequence
                 check2 = true;
 
-                //
+                //forceReturnToTheMainMode - 2 minutes
                 startIdleCalculations = true;
 
                 modeCount = 2;

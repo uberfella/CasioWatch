@@ -6,7 +6,7 @@ import com.example.casiowatch.MainActivity;
 
 public class Alarm {
 
-    private int hours = 14;
+    private int hours = 13;
     private int minutes = 0;
 
     private MainActivityInteractionInterface interactionInterface;

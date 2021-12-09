@@ -13,7 +13,7 @@ package com.example.casiowatch.mainLogic;
     2) App crashes when you setText for TextView as a raw int value ✔
         you cannot setText for textView as a raw int value, use String.format instead
     3) Handler thread and updating UI issue ✔
-    remember that you cannot access the UI of an activity from another file, you need to create a callback to the activity with an Interface
+    "remember that you cannot access the UI of an activity from another file, you need to create a callback to the activity with an Interface"
         we can't update values in custom class and use setText for TextView in MainActivity. Values won't update
         we can't update values in custom class and use setText for TextView in that custom class
         we can't update and calculate values in MainActivity as it would contradict MVP model that we are trying to comply
@@ -33,8 +33,8 @@ package com.example.casiowatch.mainLogic;
         instead
         and keep in mind that invisible means invisible, but any spacing it would normally take up will still be used
     9) Is it a good idea to run two threads in two classes. How many threads can I run?
-
-        - if we create object inside Handler with get__() method, values of it won't update
+        for starters - totally okay if it works
+    10) If we create object inside Handler with get__() method, values of it won't update
 
 
     Jan - 31    1
@@ -75,8 +75,6 @@ package com.example.casiowatch.mainLogic;
     22:00	10 PM
     23:00	11 PM
 
-    TODO calculations remain while app is minimized
-
     forceReturnToTheMainMode{
         (alarmMode && noSelection) if the minutes mark is equal 0 for the second time
         (alarmMode && hoursSelected) if the minutes mark is equal 0 for the second time
@@ -101,7 +99,7 @@ import com.example.casiowatch.MainActivity;
 import com.example.casiowatch.R;
 
 import static com.example.casiowatch.MainActivity.startIdleCalculations;
-import static com.example.casiowatch.MainActivity.forceReturnToTheMainMode;
+import static com.example.casiowatch.MainActivity.forceReturnToTheMainModeBool;
 
 public class TimeCalc {
 
@@ -173,7 +171,7 @@ public class TimeCalc {
                     if(startIdleCalculations) {
                         minuteMarkPassedCount++;
                         if(minuteMarkPassedCount == 2){
-                            forceReturnToTheMainMode = true;
+                            forceReturnToTheMainModeBool = true;
                         }
                     }
                     if(minutes==60){
